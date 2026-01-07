@@ -244,12 +244,6 @@ FoodFlow is **~75% architecturally aligned** with real food‑tech platforms.
 
 ---
 
-## 🧾 Resume‑Ready Summary
-
-> Designed and implemented a production‑grade, event‑driven food delivery backend using Spring Boot microservices, Kafka, JWT authentication, and secure payment workflows. The system supports async order processing, fault tolerance via DLQ, and scalable service‑to‑service communication inspired by Swiggy/Zomato.
-
----
-
 ## 🔮 Future Enhancements
 
 * Saga orchestration (Order + Payment + Delivery)
@@ -269,4 +263,5 @@ Backend Software Engineer (Java / Spring Boot)
 ---
 
 ⭐ If you find this project useful, give it a star!
+
 
