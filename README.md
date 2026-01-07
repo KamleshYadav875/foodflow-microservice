@@ -7,16 +7,6 @@ This repository focuses on **backend system design and scalability**, not just C
 
 ---
 
-## 📌 Repository Name
-
-**Recommended:** `foodflow-backend`
-
-### GitHub Description
-
-> Event‑driven food delivery backend built with Spring Boot microservices, Kafka, JWT, and Razorpay. Inspired by Swiggy/Zomato architecture.
-
----
-
 ## 🏗️ System Architecture
 
 FoodFlow follows a **true microservices architecture** with:
@@ -279,3 +269,4 @@ Backend Software Engineer (Java / Spring Boot)
 ---
 
 ⭐ If you find this project useful, give it a star!
+
