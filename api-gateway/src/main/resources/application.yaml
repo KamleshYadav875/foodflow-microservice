@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+
+  cloud:
+    gateway:
+      routes:
+        - id: identity-auth
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/api/auth/**
+
+        - id: identity-users
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - name: Authentication
+
+        - id: delivery-service
+          uri: lb://DELIVERY-SERVICE
+          predicates:
+            - Path=/api/delivery/**
+          filters:
+            - name: Authentication
+
+        - id: restaurant-public-service
+          uri: lb://RESTAURANT-SERVICE
+          predicates:
+            - Path=/api/public/restaurants, /api/public/restaurants/**, /api/public/menu-item/**
+
+        - id: restaurant-service
+          uri: lb://RESTAURANT-SERVICE
+          predicates:
+            - Path=/api/restaurant/**, /api/restaurant, /api/menuitem/**, /api/menuitem
+          filters:
+              - name: Authentication
+
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/cart/**, /api/order/**
+          filters:
+            - name: Authentication
+
+        - id: payment-service
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/api/payments/**
+          filters:
+            - name: Authentication
+
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 864000
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: WARN
+  pattern:
+    level: "%5p [${spring.application.name},%X{traceId:-},%X{spanId:-}]"
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0   # 100% traces (dev only)
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
