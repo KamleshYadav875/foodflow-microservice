@@ -35,6 +35,13 @@ pipeline{
                 }
             }
         }
+        stage("Build Docker Image"){
+            steps{
+                dir("${SERVICE_PATH}") {
+                    sh "docker build -t ${DOCKER_IMAGE}:latest ."
+                }
+            }
+        }
     }
     post {
         success {
