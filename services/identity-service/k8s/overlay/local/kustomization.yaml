@@ -6,5 +6,5 @@ namespace: foodflow
 resources:
   - ../../base
 
-patchesStrategicMerge:
-  - patch.yaml
+patches:
+  - path:  patch.yaml
