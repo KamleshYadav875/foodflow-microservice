@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restaurant-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restaurant-service
+  template:
+    metadata:
+      labels:
+        app: restaurant-service
+    spec:
+      containers:
+      - name: restaurant-service
+        image: kamleshyadav875/restaurant-service:latest
+        ports:
+          - containerPort: 8083
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: default
+
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: restaurant-service-db-config
+                key: DB_HOST
+
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: restaurant-service-db-config
+                key: DB_PORT
+
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: restaurant-service-db-config
+                key: DB_NAME
+
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: restaurant-service-secret
+                key: DB_USERNAME
+
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: restaurant-service-secret
+                key: DB_PASSWORD

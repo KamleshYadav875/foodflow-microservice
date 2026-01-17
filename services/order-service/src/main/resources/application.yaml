@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: order-service
+
+server:
+  port: 8082
+
+order:
+  auto-cancel:
+    created-minutes: 5
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

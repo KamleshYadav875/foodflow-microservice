@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-service
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: identity-service
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: dev
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

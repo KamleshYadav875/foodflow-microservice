@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+    spec:
+      containers:
+      - name: payment-service
+        image: kamleshyadav875/payment-service:latest
+        ports:
+          - containerPort: 8085
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: default
+
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: payment-service-db-config
+                key: DB_HOST
+
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: payment-service-db-config
+                key: DB_PORT
+
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: payment-service-db-config
+                key: DB_NAME
+
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: payment-service-secret
+                key: DB_USERNAME
+
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: payment-service-secret
+                key: DB_PASSWORD

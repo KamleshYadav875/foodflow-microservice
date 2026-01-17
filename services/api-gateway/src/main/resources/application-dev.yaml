@@ -1,0 +1,52 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: identity-auth
+          uri: http://identity-service:8087
+          predicates:
+            - Path=/api/auth/**
+
+        - id: identity-users
+          uri: http://identity-service:8087
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - name: Authentication
+
+        - id: delivery-service
+          uri: lb://DELIVERY-SERVICE
+          predicates:
+            - Path=/api/delivery/**
+          filters:
+            - name: Authentication
+
+        - id: restaurant-public-service
+          uri: lb://RESTAURANT-SERVICE
+          predicates:
+            - Path=/api/public/restaurants, /api/public/restaurants/**, /api/public/menu-item/**
+
+        - id: restaurant-service
+          uri: lb://RESTAURANT-SERVICE
+          predicates:
+            - Path=/api/restaurant/**, /api/restaurant, /api/menuitem/**, /api/menuitem
+          filters:
+              - name: Authentication
+
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/cart/**, /api/order/**
+          filters:
+            - name: Authentication
+
+        - id: payment-service
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/api/payments/**
+          filters:
+            - name: Authentication
+
+spring.cloud:
+  discovery:
+    enabled: false

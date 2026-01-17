@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: delivery-service
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+server:
+  port: 8086
+
+address: true

@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity-service
+  template:
+    metadata:
+      labels:
+        app: identity-service
+    spec:
+      containers:
+      - name: identity-service
+        image: kamleshyadav875/identity-service:latest
+        ports:
+          - containerPort: 8087
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: default
+
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: identity-service-db-config
+                key: DB_HOST
+
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: identity-service-db-config
+                key: DB_PORT
+
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: identity-service-db-config
+                key: DB_NAME
+
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: identity-service-secret
+                key: DB_USERNAME
+
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: identity-service-secret
+                key: DB_PASSWORD
+
+          - name: GOOGLE_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: identity-service-secret
+                key: DB_PASSWORD
+
+          - name: GOOGLE_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: identity-service-secret
+                key: DB_PASSWORD
+
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: identity-service-secret
+                key: jwt-secret

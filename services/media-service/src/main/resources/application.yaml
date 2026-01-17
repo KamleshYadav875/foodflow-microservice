@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: media-service
+
+server:
+  port: 8084
+
+app:
+  storage:
+    location: ${STORAGE_LOCATION:uploads}

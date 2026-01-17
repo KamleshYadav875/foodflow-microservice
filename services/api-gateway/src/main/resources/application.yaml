@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 864000
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: WARN
+  pattern:
+    level: "%5p [${spring.application.name},%X{traceId:-},%X{spanId:-}]"
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0   # 100% traces (dev only)

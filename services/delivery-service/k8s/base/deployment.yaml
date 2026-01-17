@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delivery-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: delivery-service
+  template:
+    metadata:
+      labels:
+        app: delivery-service
+    spec:
+      containers:
+      - name: delivery-service
+        image: kamleshyadav875/delivery-service:latest
+        ports:
+          - containerPort: 8086
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: default
+
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: delivery-service-db-config
+                key: DB_HOST
+
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: delivery-service-db-config
+                key: DB_PORT
+
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: delivery-service-db-config
+                key: DB_NAME
+
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: delivery-service-secret
+                key: DB_USERNAME
+
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: delivery-service-secret
+                key: DB_PASSWORD
