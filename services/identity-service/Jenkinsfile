@@ -14,7 +14,7 @@ pipeline{
         }
         stage("Build Shared Contracts") {
             steps {
-                dir("event-contracts") {
+                dir("services/event-contracts") {
                     sh "$MAVEN_HOME/bin/mvn clean install -DskipTests"
                 }
             }
