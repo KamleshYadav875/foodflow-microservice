@@ -12,6 +12,13 @@ pipeline{
                 git url: "https://github.com/KamleshYadav875/foodflow-microservice.git", branch: "main"
             }
         }
+        stage("Build Shared Contracts") {
+            steps {
+                dir("event-contracts") {
+                    sh "$MAVEN_HOME/bin/mvn clean install -DskipTests"
+                }
+            }
+        }
         stage("Build & Compile"){
             steps {
                 dir("${SERVICE_PATH}") {
