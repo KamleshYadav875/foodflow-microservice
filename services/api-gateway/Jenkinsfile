@@ -1,0 +1,40 @@
+pipeline{
+    agent any
+    environment{
+        MAVEN_HOME= tool "maven"
+        SERVICE_NAME = "identity-service"
+        SERVICE_PATH = "services/identity-service"
+        DOCKER_IMAGE = "kamleshyadav875/identity-service"
+    }
+    stages{
+        stage("Clone Code from GitHub"){
+            steps{
+                git url: "https://github.com/KamleshYadav875/foodflow-microservice.git", branch: "main"
+            }
+        }
+        stage("Build & Compile"){
+            steps {
+                dir("${SERVICE_PATH}") {
+                    sh "$MAVEN_HOME/bin/mvn clean compile -DskipTests"
+                }
+            }
+        }
+        stage("SonarQube Quality Analysis"){
+            steps{
+                dir("${SERVICE_PATH}") {
+                    withSonarQubeEnv("Sonar"){
+                        sh "$MAVEN_HOME/bin/mvn sonar:sonar -Dsonar.projectKey=foodflow-identity-service"
+                    }
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo "✅ ${SERVICE_NAME} Build and Sonar Analysis done"
+        }
+        failure {
+            echo "❌ ${SERVICE_NAME} pipeline failed"
+        }
+    }
+}
