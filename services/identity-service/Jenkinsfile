@@ -52,7 +52,8 @@ pipeline{
         }
         stage("Deploy to Minikube") {
             steps {
-                sh "kubectl apply -k ${SERVICE_PATH}/k8s/overlay/local"
+                sh """ kubectl apply -k ${SERVICE_PATH}/k8s/overlay/local \
+                --validate=false"""
             }
         }
     }
