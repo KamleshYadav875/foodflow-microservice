@@ -3,8 +3,8 @@ pipeline{
     environment{
         MAVEN_HOME= tool "maven"
         SERVICE_NAME = "identity-service"
-        SERVICE_PATH = "services/delivery-service"
-        DOCKER_IMAGE = "kamleshyadav875/delivery-service"
+        SERVICE_PATH = "services/identity-service"
+        DOCKER_IMAGE = "kamleshyadav875/identity-service"
     }
     stages{
         stage("Clone Code from GitHub"){
@@ -23,7 +23,7 @@ pipeline{
             steps{
                 dir("${SERVICE_PATH}") {
                     withSonarQubeEnv("Sonar"){
-                        sh "$MAVEN_HOME/bin/mvn sonar:sonar -Dsonar.projectKey=foodflow-delivery-service"
+                        sh "$MAVEN_HOME/bin/mvn sonar:sonar -Dsonar.projectKey=foodflow-identity-service"
                     }
                 }
             }
