@@ -20,8 +20,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
       # Kubernetes / Minikube access
-      - C:/Users/kamlesh  yadav/.kube:/root/.kube
-      - C:/Users/kamlesh  yadav/.minikube:/root/.minikube
+      - ./kubeconfig:/root/.kube/config
 
     environment:
       JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
@@ -56,6 +55,7 @@ volumes:
   sonarqube_data:
   sonarqube_extensions:
   sonarqube_logs:
+
 
 networks:
   cicd-network:
