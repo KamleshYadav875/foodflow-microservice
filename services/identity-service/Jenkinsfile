@@ -59,10 +59,10 @@ pipeline{
     }
     post {
         success {
-            echo "✅ ${SERVICE_NAME} Build and Sonar Analysis done"
+            echo "${SERVICE_NAME} Build and Sonar Analysis done"
         }
         failure {
-            echo "❌ ${SERVICE_NAME} pipeline failed"
+            echo "${SERVICE_NAME} pipeline failed"
         }
     }
 }

@@ -20,8 +20,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
       # Kubernetes / Minikube access
-      - ${HOME}/.kube:/root/.kube
-      - ${HOME}/.minikube:/root/.minikube
+      - C:/Users/kamlesh  yadav/.kube:/root/.kube
+      - C:/Users/kamlesh  yadav/.minikube:/root/.minikube
 
     environment:
       JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"

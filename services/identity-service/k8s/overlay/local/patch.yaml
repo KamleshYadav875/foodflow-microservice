@@ -10,7 +10,7 @@ spec:
         - name: identity-service
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: dev
+              value: prod
           resources:
             requests:
               cpu: "200m"
