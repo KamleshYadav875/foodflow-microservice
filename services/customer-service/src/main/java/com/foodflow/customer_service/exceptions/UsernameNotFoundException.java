@@ -1,0 +1,8 @@
+package com.foodflow.customer_service.exceptions;
+
+public class UsernameNotFoundException extends RuntimeException{
+
+    public UsernameNotFoundException(String message){
+        super(message);
+    }
+}

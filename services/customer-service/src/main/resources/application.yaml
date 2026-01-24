@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: customer-service
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+server:
+  port: 8088
