@@ -1,0 +1,23 @@
+package com.foodflow.restaurant_service.client.config;
+
+import com.foodflow.restaurant_service.client.OrderServiceClient;
+import com.foodflow.restaurant_service.client.UserServiceClient;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.support.RestClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+
+@Configuration
+public class OrderServiceClientConfig {
+
+    @Bean
+    public OrderServiceClient orderServiceClientInterface(@Qualifier("loadBalancedRestClientBuilder") RestClient.Builder restClientBuilder){
+        RestClient restClient = restClientBuilder.baseUrl("http://ORDER-SERVICE").build();
+        RestClientAdapter adapter = RestClientAdapter.create(restClient);
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+
+        return factory.createClient(OrderServiceClient.class);
+    }
+}
