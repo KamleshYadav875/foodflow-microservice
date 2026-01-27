@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class InternalUserCreateRequest {
+public class UserInternalRequestDto {
 
     private String phone;
-    private String password;
 }

@@ -7,8 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="identity-service" />
+        <module name="api-gateway" />
         <module name="discovery-server" />
+        <module name="order-service" />
+        <module name="identity-service" />
       </profile>
       <profile name="Annotation profile for foodflow-event-contracts" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -26,37 +28,19 @@
         <processorPath>
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
+        <module name="delivery-service" />
         <module name="restaurant-service" />
         <module name="payment-service" />
         <module name="media-service" />
       </profile>
-      <profile name="Annotation profile for delivery-service" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath>
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-        </processorPath>
-        <module name="delivery-service" />
-      </profile>
-      <profile name="Annotation profile for api-gateway" enabled="true">
+      <profile name="Annotation profile for customer-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath>
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="api-gateway" />
-      </profile>
-      <profile name="Annotation profile for order-service" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-        </processorPath>
-        <module name="order-service" />
+        <module name="customer-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -66,6 +50,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
+      <module name="customer-service" options="-parameters" />
       <module name="delivery-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="event-contracts" options="" />

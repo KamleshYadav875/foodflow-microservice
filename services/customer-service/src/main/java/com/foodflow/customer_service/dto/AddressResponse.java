@@ -11,10 +11,14 @@ import lombok.*;
 public class AddressResponse {
 
     private Long id;
+    private String type;
     private String address;
     private String city;
     private String state;
     private String zipcode;
-    private Boolean isDefault;
     private String label;
+    private String landmark;
+    private Boolean isDefault;
+    private Double lng;
+    private Double lat;
 }

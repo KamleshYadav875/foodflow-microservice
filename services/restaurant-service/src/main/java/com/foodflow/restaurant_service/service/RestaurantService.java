@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RestaurantService {
 
-    RestaurantDetailResponseDto createRestaurant(RestaurantRequestDto request, MultipartFile image);
+    RestaurantRegisterResponse registerNewRestaurant(RestaurantRegisterRequest request);
 
     List<RestaurantListResponseDto> getAllRestaurantsByCity(String city);
 
@@ -25,4 +25,6 @@ public interface RestaurantService {
     RestaurantOwnerProfileResponseDto getRestaurantProfile(Long userId);
 
     RestaurantOwnerProfileResponseDto updateRestaurantProfile(Long userId);
+
+    List<RestaurantCardDto> getRestaurants(String city);
 }

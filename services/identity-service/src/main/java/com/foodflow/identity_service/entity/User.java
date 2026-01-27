@@ -33,9 +33,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
-
     @Column( unique = true)
     private String phone;
 
@@ -55,16 +52,6 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
-
-    private String address;
-
-    private String city;
-
-    private String state;
-
-    private String zipcode;
-
-    private String profileImageUrl;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

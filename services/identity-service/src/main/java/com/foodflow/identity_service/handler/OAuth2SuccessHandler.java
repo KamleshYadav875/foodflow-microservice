@@ -47,15 +47,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         if(user == null){
             User newUser = User.builder()
                     .email(email)
-                    .name(oAuthUser.getAttribute("name"))
-                    .profileImageUrl(oAuthUser.getAttribute("picture"))
                     .roles(Set.of(UserRole.USER))
                     .build();
 
             user = userService.saveUser(newUser);
         }
 
-        String accessToken = jwtService.generateToken(user);
+        String accessToken = jwtService.generateAccessToken(user);
         log.info("Token: {}",accessToken);
         String frontEndUrl = redirectUrl+"?token="+accessToken;
         getRedirectStrategy().sendRedirect(request, response, frontEndUrl);

@@ -8,7 +8,7 @@
 
     @Getter
     @Setter
-    public class UserCreateRequest {
+    public class UserRegisterRequest {
 
         private String name;
         @NotBlank(message = "Phone number should not be blank")
@@ -17,6 +17,7 @@
                 message = "Phone number must be a valid 10-digit Indian number"
         )
         private String phone;
+        private String email;
         @NotBlank
         @Size(min = 8, message = "Password should be at least 8 characters")
         private String password;

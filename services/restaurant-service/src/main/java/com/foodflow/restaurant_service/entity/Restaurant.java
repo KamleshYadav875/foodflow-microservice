@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(
@@ -36,25 +37,55 @@ public class Restaurant {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String restaurantName;
+
+    @Column(unique = true)
+    private String phone;
+
+    private String email;
 
     private String description;
 
-    private Long ownerId;
+    @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
+    private String ownerName;
 
     private Boolean isOpen = true;
 
     private Float rating;
 
+    @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
     private String city;
 
     private String state;
 
-    private String zipcode;
+    @Column(nullable = false)
+    private String pincode;
 
     private String imageUrl;
+
+    private LocalTime openingTime;
+
+    private LocalTime closingTime;
+
+    @Column(nullable = false)
+    private String fssaiNumber;
+
+    private String gstNumber;
+
+    @Column(nullable = false)
+    private String panNumber;
+
+    @Column(nullable = false)
+    private String bankAccountNumber;
+
+    @Column(nullable = false)
+    private String ifscCode;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

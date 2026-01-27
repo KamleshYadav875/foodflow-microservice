@@ -4,7 +4,7 @@ import com.foodflow.identity_service.dto.UserOrderStatsResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "order-service", url = "http://order-service:8082")
+@FeignClient(name = "ORDER-SERVICE")
 public interface OrderServiceClient {
 
     @GetMapping("/api/order/user-stats/{userId}")

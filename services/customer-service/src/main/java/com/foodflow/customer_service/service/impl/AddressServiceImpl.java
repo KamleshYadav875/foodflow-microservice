@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AddressServiceImpl  implements AddressService {
@@ -21,7 +23,7 @@ public class AddressServiceImpl  implements AddressService {
 
     @Override
     @Transactional
-    public void addAddress(Long userId, AddressRequest request) {
+    public AddressResponse addAddress(Long userId, AddressRequest request) {
 
         Customer customer = customerRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
@@ -35,15 +37,29 @@ public class AddressServiceImpl  implements AddressService {
             }
         }
         Address address = Address.builder()
+                .type(request.getType())
                 .customer(customer)
                 .address(request.getAddress())
                 .city(request.getCity())
                 .state(request.getState())
                 .zipcode(request.getZipcode())
+                .label(request.getLabel())
+                .landmark(request.getLandmark())
                 .isDefault(request.getIsDefault())
                 .build();
 
-        addressRepository.save(address);
+        Address savedAddress = addressRepository.save(address);
+        return AddressResponse.builder()
+                .id(savedAddress.getId())
+                .address(savedAddress.getAddress())
+                .city(savedAddress.getCity())
+                .state(savedAddress.getState())
+                .zipcode(savedAddress.getZipcode())
+                .label(savedAddress.getLabel())
+                .type(savedAddress.getType())
+                .landmark((savedAddress.getLandmark()))
+                .isDefault(savedAddress.getIsDefault())
+                .build();
     }
 
     @Override
@@ -53,6 +69,11 @@ public class AddressServiceImpl  implements AddressService {
 
         Address address = addressRepository.findByCustomerAndId(customer, Long.valueOf(addressId))
                 .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+
+        Address defaultAddress = addressRepository.findByCustomerAndIsDefaultTrue(customer);
+        if(defaultAddress != null){
+            defaultAddress.setIsDefault(false);
+        }
 
         address.setIsDefault(true);
         addressRepository.save(address);
@@ -84,5 +105,27 @@ public class AddressServiceImpl  implements AddressService {
                 .label(savedAddress.getLabel())
                 .isDefault(savedAddress.getIsDefault())
                 .build();
+    }
+
+    @Override
+    public List<AddressResponse> getAddress(Long userId) {
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
+
+        List<Address> addressList = addressRepository.findByCustomer(customer);
+
+        return addressList.stream()
+                .map(address -> AddressResponse.builder()
+                        .id(address.getId())
+                        .address(address.getAddress())
+                        .city(address.getCity())
+                        .state(address.getState())
+                        .zipcode(address.getZipcode())
+                        .label(address.getLabel())
+                        .isDefault(address.getIsDefault())
+                        .lat(address.getLatitude())
+                        .lng(address.getLongitude())
+                        .build())
+                .toList();
     }
 }

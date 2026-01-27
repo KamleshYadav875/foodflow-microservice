@@ -9,9 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 public interface CustomerService {
     CustomerProfileResponseDto getMyProfile(Long userId);
 
-    CustomerProfileResponseDto updateProfile(UpdateCustomerProfileRequest request);
+    void updateProfile(Long userId, UpdateCustomerProfileRequest request);
 
-    void updateUserImage(MultipartFile image);
+    String updateUserImage(Long userId, MultipartFile image);
 
 
     CustomerHomeResponse home(Long userId);

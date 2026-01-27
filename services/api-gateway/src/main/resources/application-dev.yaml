@@ -33,6 +33,11 @@ spring:
           filters:
               - name: Authentication
 
+        - id: customer-service
+          uri: lb://CUSTOMER-SERVICE
+          predicates:
+            - Path=/api/customer/**
+
         - id: order-service
           uri: lb://ORDER-SERVICE
           predicates:

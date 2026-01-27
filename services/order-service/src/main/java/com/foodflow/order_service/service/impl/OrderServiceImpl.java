@@ -369,6 +369,22 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
     }
 
+    @Override
+    public CartPreviewDto getMyCartPreview(Long userId) {
+        Cart myCart = cartRepository.findByUserId(userId);
+
+        if(myCart == null){
+            return CartPreviewDto.builder()
+                    .hasItems(false)
+                    .build();
+        }
+        return CartPreviewDto.builder()
+                .hasItems(true)
+                .itemCount(myCart.getTotalItems())
+                .totalAmount(myCart.getTotalAmount())
+                .build();
+    }
+
 
     private PartnerOrderDetail mapToPartnerOrderDetail(Order order){
         return PartnerOrderDetail.builder()

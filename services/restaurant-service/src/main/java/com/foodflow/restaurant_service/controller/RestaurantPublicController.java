@@ -1,10 +1,7 @@
 package com.foodflow.restaurant_service.controller;
 
 
-import com.foodflow.restaurant_service.dto.RestaurantDetailResponseDto;
-import com.foodflow.restaurant_service.dto.RestaurantListResponseDto;
-import com.foodflow.restaurant_service.dto.RestaurantMenuResponseDto;
-import com.foodflow.restaurant_service.dto.RestaurantRequestDto;
+import com.foodflow.restaurant_service.dto.*;
 import com.foodflow.restaurant_service.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,15 +14,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/public/restaurants")
+@RequestMapping("/api/restaurants")
 public class RestaurantPublicController {
 
     private final RestaurantService restaurantService;
 
     // Create restaurant
-    @PostMapping(value = "/onboardrestaurant", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<RestaurantDetailResponseDto> createRestaurant(@RequestPart("restaurant") RestaurantRequestDto request, @RequestPart(value = "image", required = false) MultipartFile image){
-        RestaurantDetailResponseDto response = restaurantService.createRestaurant(request, image);
+    @PostMapping(value = "/register",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestaurantRegisterResponse> registerNewRestaurant(@RequestBody RestaurantRegisterRequest request){
+        RestaurantRegisterResponse response = restaurantService.registerNewRestaurant(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

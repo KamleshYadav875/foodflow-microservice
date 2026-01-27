@@ -52,6 +52,8 @@ public class MenuItems {
 
     private Boolean isVeg = false;
 
+    private Boolean isBestseller = false;
+
     private Boolean isAvailable = true;
 
     private String imageUrl;

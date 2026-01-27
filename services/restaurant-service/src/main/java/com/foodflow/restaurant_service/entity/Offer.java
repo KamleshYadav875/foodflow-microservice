@@ -9,10 +9,11 @@ import java.time.LocalDate;
 
 @Entity
 @Table(
+        name = "offer",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "idx_offer_restaurant_id_code",
-                        columnNames = "restaurantId, code"
+                        columnNames = {"restaurant_id", "code"}
                 )
         }
 )
@@ -26,9 +27,13 @@ public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "restaurant_id", nullable = false)
     private Long restaurantId;
     private String title;
     private String description;
+
+    @Column(nullable = false)
     private String code;
 
     @Enumerated(EnumType.STRING)

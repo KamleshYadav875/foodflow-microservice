@@ -8,5 +8,6 @@ import lombok.Data;
 public class AddNewCustomerRequest {
     private Long userId;
     private String email;
+    private String name;
     private String phone;
 }

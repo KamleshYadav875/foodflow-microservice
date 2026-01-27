@@ -36,7 +36,8 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/api/auth/**",
                                         "/api/public/**",
-                                        "/actuator/**"
+                                        "/actuator/**",
+                                        "/user/internal/**"
                                 ).permitAll()
 
                                 // Internal (service-to-service)
@@ -44,10 +45,10 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login(oauthConfig -> oauthConfig
-                        .failureUrl("/login?error=true")
-                        .successHandler(oAuth2SuccessHandler)
-                )
+//                .oauth2Login(oauthConfig -> oauthConfig
+//                        .failureUrl("/login?error=true")
+//                        .successHandler(oAuth2SuccessHandler)
+//                )
         ;
         return http.build();
     }

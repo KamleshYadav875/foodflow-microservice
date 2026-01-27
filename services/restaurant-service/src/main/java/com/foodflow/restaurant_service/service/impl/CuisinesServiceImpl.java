@@ -22,7 +22,7 @@ public class CuisinesServiceImpl implements CuisinesService {
     @Override
     public CuisinesResponse createCuisines(Long userId, CuisinesRequest request) {
 
-        Restaurant restaurant = restaurantRepository.findByOwnerId(userId)
+        Restaurant restaurant = restaurantRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
         Cuisines cuisines = Cuisines.builder()
@@ -43,7 +43,7 @@ public class CuisinesServiceImpl implements CuisinesService {
 
     @Override
     public CuisinesResponse updateCuisines(Long userId, Long cuisineId, CuisinesRequest request) {
-        Restaurant restaurant = restaurantRepository.findByOwnerId(userId)
+        Restaurant restaurant = restaurantRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
         Cuisines cuisines = cuisinesRepository.findByIdAndRestaurantId(cuisineId, restaurant.getId());
@@ -63,7 +63,7 @@ public class CuisinesServiceImpl implements CuisinesService {
 
     @Override
     public List<CuisinesResponse> getCuisines(Long userId) {
-        Restaurant restaurant = restaurantRepository.findByOwnerId(userId)
+        Restaurant restaurant = restaurantRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
         List<Cuisines> cuisines = cuisinesRepository.findByRestaurantId(restaurant.getId());

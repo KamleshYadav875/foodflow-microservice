@@ -23,7 +23,7 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public OfferResponse createOffer(Long userId, OfferRequest request) {
 
-        Restaurant restaurant = restaurantRepository.findByOwnerId(userId)
+        Restaurant restaurant = restaurantRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
         Offer offer = Offer.builder()
@@ -58,7 +58,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public OfferResponse updateOffer(Long userId, Long offerId, OfferRequest request) {
-        Restaurant restaurant = restaurantRepository.findByOwnerId(userId)
+        Restaurant restaurant = restaurantRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
         Offer offer = offerRepository.findByIdAndRestaurantId(offerId, restaurant.getId());
@@ -91,7 +91,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public void deleteOffer(Long userId, Long offerId) {
-        Restaurant restaurant = restaurantRepository.findByOwnerId(userId)
+        Restaurant restaurant = restaurantRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
         Offer offer = offerRepository.findByIdAndRestaurantId(offerId, restaurant.getId());
 
@@ -104,7 +104,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public List<OfferResponse> getOffer(Long userId) {
-        Restaurant restaurant = restaurantRepository.findByOwnerId(userId)
+        Restaurant restaurant = restaurantRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
         List<Offer> offers = offerRepository.findByRestaurantId(restaurant.getId());

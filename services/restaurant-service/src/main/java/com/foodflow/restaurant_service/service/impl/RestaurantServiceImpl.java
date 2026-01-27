@@ -4,17 +4,20 @@ package com.foodflow.restaurant_service.service.impl;
 import com.foodflow.restaurant_service.client.MediaServiceClient;
 import com.foodflow.restaurant_service.client.UserServiceClient;
 import com.foodflow.restaurant_service.dto.*;
+import com.foodflow.restaurant_service.entity.Cuisines;
 import com.foodflow.restaurant_service.entity.MenuItems;
+import com.foodflow.restaurant_service.entity.Offer;
 import com.foodflow.restaurant_service.entity.Restaurant;
 import com.foodflow.restaurant_service.exceptions.BadRequestException;
 import com.foodflow.restaurant_service.exceptions.ResourceNotFoundException;
+import com.foodflow.restaurant_service.repository.CuisinesRepository;
 import com.foodflow.restaurant_service.repository.MenuItemRepository;
+import com.foodflow.restaurant_service.repository.OfferRepository;
 import com.foodflow.restaurant_service.repository.RestaurantRepository;
 import com.foodflow.restaurant_service.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,40 +35,51 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final MediaServiceClient mediaServiceClient;
     private final UserServiceClient userServiceClient;
     private final MenuItemRepository menuItemRepository;
+    private final OfferRepository offerRepository;
+    private final CuisinesRepository cuisinesRepository;
 
     private final ModelMapper modelMapper;
 
     @Override
     @Transactional
-    public RestaurantDetailResponseDto createRestaurant(RestaurantRequestDto request, MultipartFile image) {
+    public RestaurantRegisterResponse registerNewRestaurant(RestaurantRegisterRequest request) {
+
+        boolean existsByPhone = restaurantRepository.existsByPhone(request.getPhone());
+
+        if(existsByPhone){
+            throw new BadRequestException("Restaurant is already register with phone number");
+        }
 
         UserInternalRequestDto userRequest = UserInternalRequestDto.builder()
                 .phone(request.getPhone())
-                .name(request.getName())
                 .build();
         UserInternalResponseDto user = userServiceClient.onboardRestaurantAdmin(userRequest);
 
-        if(restaurantRepository.existsByOwnerId(user.getId())){
-            throw new BadRequestException("Restaurant is already registered with same phone");
-        }
-        String url = image == null ? null : mediaServiceClient.uploadImage(image, "restaurant");
-
         Restaurant restaurant = Restaurant.builder()
-                .name(request.getName())
+                .userId(user.getId())
+                .restaurantName(request.getRestaurantName())
                 .description(request.getDescription())
-                .ownerId(user.getId())
-                .rating(0f)
                 .address(request.getAddress())
                 .city(request.getCity())
-                .state(request.getState())
-                .zipcode(request.getZipcode())
-                .isOpen(true)
-                .imageUrl(url)
+                .pincode(request.getPincode())
+                .ownerName(request.getOwnerName())
+                .email(request.getEmail())
+                .phone(request.getPhone())
+                .openingTime(request.getOpeningTime())
+                .closingTime(request.getClosingTime())
+                .fssaiNumber(request.getFssaiNumber())
+                .gstNumber(request.getGstNumber())
+                .panNumber(request.getPanNumber())
+                .bankAccountNumber(request.getBankAccountNumber())
+                .ifscCode(request.getIfscCode())
                 .build();
 
-        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+        restaurantRepository.save(restaurant);
 
-        return modelMapper.map(savedRestaurant, RestaurantDetailResponseDto.class);
+        return RestaurantRegisterResponse.builder()
+                .success(true)
+                .message("Restaurant registered successfully")
+                .build();
     }
 
     @Override
@@ -113,7 +127,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         return RestaurantDetailResponse.builder()
                 .restaurantId(restaurant.getId())
-                .restaurantName(restaurant.getName())
+                .restaurantName(restaurant.getRestaurantName())
                 .restaurantAddress(restaurant.getAddress())
                 .restaurantLongitude(0.0)
                 .restaurantLatitude(0.0)
@@ -158,7 +172,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         return RestaurantOwnerProfileResponseDto.builder()
                 .id(restaurant.getId())
-                .name(restaurant.getName())
+                .name(restaurant.getRestaurantName())
                 .description(restaurant.getDescription())
                 .isOpen(restaurant.getIsOpen())
                 .rating(restaurant.getRating())
@@ -166,8 +180,8 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .address(restaurant.getAddress())
                 .city(restaurant.getCity())
                 .state(restaurant.getState())
-                .zipcode(restaurant.getZipcode())
-                .ownerId(restaurant.getOwnerId())
+                .zipcode(restaurant.getPincode())
+                .ownerId(restaurant.getUserId())
                 .totalMenuItems((int) totalMenuItems)
                 .activeMenuItems((int) activeMenuItems)
                 .joinedAt(restaurant.getCreatedAt())
@@ -181,10 +195,29 @@ public class RestaurantServiceImpl implements RestaurantService {
         return mapToRestaurantOwnerProfileResponseDto(restaurant);
     }
 
+    @Override
+    public List<RestaurantCardDto> getRestaurants(String city) {
+        List<Restaurant> restaurantList = restaurantRepository.findByCity(city);
+
+        return restaurantList.stream().map(restaurant -> RestaurantCardDto.builder()
+                .id(restaurant.getId())
+                .name(restaurant.getRestaurantName())
+                .description(restaurant.getDescription())
+                .rating(restaurant.getRating())
+                .imageUrl(restaurant.getImageUrl())
+                .isOpen(restaurant.getIsOpen())
+                .deliveryTime("15 min")
+                .distance("2.0 km")
+                .cuisine(cuisinesRepository.findByRestaurantId(restaurant.getId()).stream().map(Cuisines::getName).toList())
+                .offers(offerRepository.findByRestaurantId(restaurant.getId()).stream().map(Offer::getTitle).toList())
+                .build()
+                ).toList();
+    }
+
     private RestaurantOwnerProfileResponseDto mapToRestaurantOwnerProfileResponseDto(Restaurant restaurant){
         return RestaurantOwnerProfileResponseDto.builder()
                 .id(restaurant.getId())
-                .name(restaurant.getName())
+                .name(restaurant.getRestaurantName())
                 .description(restaurant.getDescription())
                 .isOpen(restaurant.getIsOpen())
                 .rating(restaurant.getRating())
@@ -192,13 +225,13 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .address(restaurant.getAddress())
                 .city(restaurant.getCity())
                 .state(restaurant.getState())
-                .zipcode(restaurant.getZipcode())
+                .zipcode(restaurant.getPincode())
                 .joinedAt(restaurant.getCreatedAt())
                 .build();
     }
 
     private Restaurant getRestaurantForOwner(Long userId) {
-        return restaurantRepository.findByOwnerId(userId)
+        return restaurantRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
     };
 

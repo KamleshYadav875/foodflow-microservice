@@ -1,5 +1,13 @@
 spring:
 
+  cache:
+    type: redis
+
+    data:
+      redis:
+        host: localhost
+        port: 6379
+        timeout: 60000
 
   kafka:
     bootstrap-servers: localhost:9092
@@ -30,3 +38,24 @@ frontend:
   level: "%5p [${spring.application.name},%X{traceId:-},%X{spanId:-}]"
 
 
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  file:
+    name: log/${spring.application.name}.log

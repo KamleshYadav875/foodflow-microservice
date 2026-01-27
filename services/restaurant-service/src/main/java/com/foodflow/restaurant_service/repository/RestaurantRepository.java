@@ -13,7 +13,9 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     List<Restaurant> findByCity(String city);
 
-    boolean existsByOwnerId(Long ownerId);
+    boolean existsByUserId(Long ownerId);
 
-    Optional<Restaurant> findByOwnerId(Long userId);
+    Optional<Restaurant> findByUserId(Long userId);
+
+    boolean existsByPhone(String phone);
 }

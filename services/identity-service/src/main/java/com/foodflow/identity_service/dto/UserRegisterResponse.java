@@ -10,8 +10,6 @@ import java.util.Set;
 @Setter
 public class UserRegisterResponse {
     private Long id;
-    private String name;
     private String phone;
     private Set<UserRole> roles;
-    private String profileImageUrl;
 }

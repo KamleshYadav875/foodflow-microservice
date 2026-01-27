@@ -9,6 +9,6 @@ import org.springframework.web.service.annotation.PostExchange;
 @HttpExchange
 public interface UserServiceClient {
 
-    @PostExchange("/user/internal/onboardadmin")
+    @PostExchange("/user/internal/restaurant-admin")
     UserInternalResponseDto onboardRestaurantAdmin(@RequestBody UserInternalRequestDto request);
 }

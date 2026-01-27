@@ -26,11 +26,14 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private String expiration;
 
+    @Value("${jwt.refreshExpiry}")
+    private String refreshExpiry;
+
     private Key getKey(){
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(User user){
+    public String generateAccessToken(User user){
 
         Instant now = Instant.now();
         Instant expiry = now.plusMillis(Long.parseLong(expiration));
@@ -38,6 +41,19 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(user.getId().toString())
                 .claim("roles", user.getRoles().stream().map(Enum::name).toList())
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(expiry))
+                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String generateRefreshToken(User user){
+
+        Instant now = Instant.now();
+        Instant expiry = now.plusMillis(Long.parseLong(refreshExpiry));
+
+        return Jwts.builder()
+                .setSubject(user.getId().toString())
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(expiry))
                 .signWith(getKey(), SignatureAlgorithm.HS256)

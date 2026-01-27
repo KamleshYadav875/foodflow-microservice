@@ -1,6 +1,9 @@
 package com.foodflow.restaurant_service.controller;
 
 import com.foodflow.restaurant_service.dto.RestaurantOwnerProfileResponseDto;
+import com.foodflow.restaurant_service.dto.owner.RestaurantDashboardResponse;
+import com.foodflow.restaurant_service.dto.owner.RestaurantOrdersDetailResponse;
+import com.foodflow.restaurant_service.service.RestaurantOwnerService;
 import com.foodflow.restaurant_service.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -16,8 +21,18 @@ import org.springframework.web.multipart.MultipartFile;
 public class RestaurantOwnerController {
 
     private final RestaurantService restaurantService;
+    private final RestaurantOwnerService restaurantOwnerService;
 
-    // Open / close restaurant
+    @GetMapping("/dashboard")
+    public ResponseEntity<RestaurantDashboardResponse> dashboard(@RequestHeader("X-USER-ID") Long userId){
+        return ResponseEntity.ok(restaurantOwnerService.dashboard(userId));
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<RestaurantOrdersDetailResponse>> getOrdersByStatus(@RequestHeader("X-USER-ID") Long userId, @RequestParam("status") String status){
+        return ResponseEntity.ok(restaurantOwnerService.getOrdersByStatus(userId, status));
+    }
+
     @PutMapping("/status")
     public ResponseEntity<Void> changeRestaurantState(@RequestHeader("X-USER-ID") Long userId){
         restaurantService.changeRestaurantState(userId);

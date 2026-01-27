@@ -27,6 +27,8 @@ public class Address {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    private String type;
+
     private String address;
 
     private String city;
@@ -38,6 +40,8 @@ public class Address {
     private Boolean isDefault = false;
 
     private String label;
+
+    private String landmark;
 
     private Double latitude;
     private Double longitude;

@@ -33,4 +33,6 @@ public interface OrderService {
     List<PartnerOrderDetail> getOrdersHistoryForPartner(Long partnerId);
 
     void updatePaymentDetails(Long orderId, String paymentId, String paymentLink);
+
+    CartPreviewDto getMyCartPreview(Long userId);
 }

@@ -11,9 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateCustomerProfileRequest {
     private String name;
-    private String address;
-    private String city;
-    private String state;
-    private String zipcode;
 
 }

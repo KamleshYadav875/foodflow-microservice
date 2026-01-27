@@ -1,8 +1,6 @@
 package com.foodflow.identity_service.config;
 
-import com.foodflow.identity_service.entity.User;
 import com.foodflow.identity_service.enums.UserRole;
-import com.foodflow.identity_service.exceptions.ResourceNotFoundException;
 import com.foodflow.identity_service.jwt.JwtService;
 import com.foodflow.identity_service.repository.UserRepository;
 import com.foodflow.identity_service.service.UserService;

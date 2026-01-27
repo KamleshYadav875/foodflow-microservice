@@ -29,7 +29,7 @@ public class LocalFileStorageService implements FileStorageService {
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
 
-            return "/uploads/" + folder + "/" + fileName;
+            return "http://localhost:8081/uploads/" + folder + "/" + fileName;
 
         } catch (Exception e) {
             throw new FileStorageException("Failed to store file", e);

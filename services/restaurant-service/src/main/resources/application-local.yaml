@@ -36,6 +36,21 @@ eureka:
 
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
   tracing:
     sampling:
       probability: 1.0
+
+logging:
+  file:
+    name: log/${spring.application.name}.log

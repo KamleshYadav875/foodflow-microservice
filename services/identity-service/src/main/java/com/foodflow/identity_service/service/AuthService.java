@@ -1,14 +1,23 @@
 package com.foodflow.identity_service.service;
 
 
-import com.foodflow.identity_service.dto.JwtResponse;
-import com.foodflow.identity_service.dto.LoginRequest;
-import com.foodflow.identity_service.dto.UserCreateRequest;
-import com.foodflow.identity_service.dto.UserRegisterResponse;
+import com.foodflow.identity_service.dto.*;
 
 public interface AuthService {
 
     JwtResponse login(LoginRequest request);
 
-    UserRegisterResponse registerUser(UserCreateRequest request);
+    UserRegisterResponse registerUser(UserRegisterRequest request);
+
+    JwtResponse loginOTP(LoginOTPRequest request);
+
+    void sendOTP(SendOtpRequest request);
+
+    RefreshTokenResponse refreshToken(RefreshTokenRequest request);
+
+    void resetPassword(ResetPasswordRequest request);
+
+    VerifyResetOtpResponse verifyResetOtp(VerifyResetOtpRequest request);
+
+    void setNewPassword(SetNewPasswordRequest request);
 }

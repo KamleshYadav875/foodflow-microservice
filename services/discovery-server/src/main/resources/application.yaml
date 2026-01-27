@@ -9,3 +9,7 @@ eureka:
 
 server:
   port: 8761
+
+logging:
+  file:
+    name: log/${spring.application.name}.log

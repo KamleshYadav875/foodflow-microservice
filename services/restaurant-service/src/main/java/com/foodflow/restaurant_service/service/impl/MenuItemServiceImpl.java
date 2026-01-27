@@ -36,7 +36,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Override
     @Transactional
     public MenuItemResponseDto createMenuItem(Long userId, MenuItemRequestDto request, MultipartFile image) {
-        Restaurant restaurant = restaurantRepository.findByOwnerId(userId)
+        Restaurant restaurant = restaurantRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found for owner"));
 
         if (request.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
@@ -73,7 +73,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuItems menuItem = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("MenuItem not found"));
 
-        Long ownerId = menuItem.getRestaurant().getOwnerId();
+        Long ownerId = menuItem.getRestaurant().getUserId();
         if (!ownerId.equals(userId)) {
             throw new UnauthenticatedException("Not authorized to modify this menu item");
         }
@@ -92,7 +92,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuItems menuItems = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Menuitem not found"));
 
-        Long ownerId = menuItems.getRestaurant().getOwnerId();
+        Long ownerId = menuItems.getRestaurant().getUserId();
         if (!ownerId.equals(userId)) {
             throw new UnauthenticatedException("Not authorized to modify this menu item");
         }
@@ -108,7 +108,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuItems menuItems = menuItemRepository.findById(request.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("MenuItem not found"));
 
-        Long ownerId = menuItems.getRestaurant().getOwnerId();
+        Long ownerId = menuItems.getRestaurant().getUserId();
         if (!ownerId.equals(userId)) {
             throw new UnauthenticatedException("Not authorized to modify this menu item");
         }
@@ -131,7 +131,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuItems menuItem = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
 
-        if (!menuItem.getRestaurant().getOwnerId().equals(userId)) {
+        if (!menuItem.getRestaurant().getUserId().equals(userId)) {
             throw new UnauthenticatedException("Not authorized");
         }
 

@@ -1,11 +1,15 @@
 package com.foodflow.identity_service.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-public class InternalUserResponse {
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserInternalResponseDto {
 
     private Long id;
 }

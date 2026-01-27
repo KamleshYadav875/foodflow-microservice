@@ -1,11 +1,30 @@
 spring:
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:8080"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
       routes:
         - id: identity-auth
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/api/auth/**
+        - id: media-uploads
+          uri: lb://MEDIA-SERVICE
+          predicates:
+            - Path=/uploads/**
 
         - id: identity-users
           uri: lb://IDENTITY-SERVICE
@@ -24,7 +43,7 @@ spring:
         - id: restaurant-public-service
           uri: lb://RESTAURANT-SERVICE
           predicates:
-            - Path=/api/public/restaurants, /api/public/restaurants/**, /api/public/menu-item/**
+            - Path=/api/restaurants/register, /api/public/restaurants/**, /api/public/menu-item/**
 
         - id: restaurant-service
           uri: lb://RESTAURANT-SERVICE
@@ -47,6 +66,13 @@ spring:
           filters:
             - name: Authentication
 
+        - id: customer-service
+          uri: lb://CUSTOMER-SERVICE
+          predicates:
+            - Path=/api/customer/**
+          filters:
+            - name: Authentication
+
 eureka:
   client:
     service-url:
@@ -58,7 +84,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus
+        include: health,info,prometheus,metrics
   endpoint:
     prometheus:
       enabled: true
@@ -69,3 +95,7 @@ management:
   tracing:
     sampling:
       probability: 1.0
+
+logging:
+  file:
+    name: log/${spring.application.name}.log
